@@ -2,15 +2,30 @@
 var difficulty = 50;
 
 // creates a global object to represent the score
-// oldValue is used for erasing when rendering
-var score= {"value":0, "oldValue":0};
-//renders the score by first erasing the old score
-score.render = function() {
+var score= {"value":0};
+//erases the old score by rewriting in white
+score.erase = function() {
     ctx.font = "30px Arial";
     ctx.fillStyle = "#ffffff";
-    ctx.fillText("Score: " + this.oldValue,150,50);
+    ctx.fillText("Score: " + this.value,150,50);
+}
+//writes the new score
+score.render = function() {
+    ctx.font = "30px Arial";
     ctx.fillStyle = "#000000";
     ctx.fillText("Score: " + this.value,150,50);
+}
+//erases the old score, sets it to zero, writes the 0 score on screen
+score.reset = function(){
+    score.erase();
+    this.value = 0;
+    score.render();
+}
+//erases the old score, increases it by one, writes the new score on screen
+score.increment = function(){
+    score.erase();
+    this.value++;
+    score.render();
 }
 
 
@@ -46,8 +61,7 @@ Enemy.prototype.update = function(dt) {
             player.initialize();
             //conserves the old score for erasing and sets score to zero
             //also brings difficulty back to initial value
-            score.oldValue = score.value;
-            score.value = 0;
+            score.reset();
             difficulty = 50;
         }
     }
@@ -104,8 +118,8 @@ Player.prototype.handleInput = function(keyName) {
     if(this.y<0){
         this.initialize();
         //increments score
-        score.oldValue=score.value;
-        score.value++;};
+        score.increment();
+    };
 }
 
 
@@ -124,6 +138,8 @@ allEnemies.push(new Enemy(-100,235));
 
 // creates the player object
 var player = new Player();
+
+
 
 
 // This listens for key presses and sends the keys to your

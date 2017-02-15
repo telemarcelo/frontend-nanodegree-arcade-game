@@ -152,8 +152,6 @@ var Engine = (function(global) {
         });
 
         player.render();
-
-        score.render();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -182,4 +180,6 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+    // resets and displays the score at the beginning of the game
+    score.reset();
 })(this);
